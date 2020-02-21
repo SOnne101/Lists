@@ -23,11 +23,8 @@ node6 = DoublyNode(6)
 # Link the double nodes together
 node4.next = node5
 node5.next = node6
-
-# Link the double nodes together backwards
-node4.prev = node3
-node5.prev = node4
 node6.prev = node5
+node5.prev = node4
 
 # Treversing the double nodes, first forward and the then backwards
 node4.traverse()
@@ -41,6 +38,11 @@ node2.next = node3
 node3.next = node4
 node4.next = node5
 node5.next = node6
+
+# Link the double nodes together backwards
+node4.prev = node3
+node5.prev = node4
+node6.prev = node5
 
 # Traversing all the nodes forwards and backwards
 node1.traverse()
