@@ -1,49 +1,29 @@
 # Imports
-from nodes import Node, DoublyNode 
 
-# Instanciate three node with some values
-node1 = Node(1)
-node2 = Node(2)
-node3 = Node(3)
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import gng
 
-# Link the node together
-node1.next = node2
-node2.next = node3
+# Pre Images Processing
 
-# Traversing our list
-node1.traverse()
+img = cv2.imread('astro.png') # Load images
+img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # Convert to gray scale
+img = cv2.GaussianBlur(img,(5,5),cv2.BORDER_DEFAULT) # Blure images for less details
+ret, img = cv2.threshold(img,150,255,cv2.THRESH_BINARY) # Binarization threshold
 
-print('-----------------------------------------------------------')
+# Creating dataset
 
-# Instanciate three new double node with some new values
-node4 = DoublyNode(4)
-node5 = DoublyNode(5)
-node6 = DoublyNode(6)
+data = [] # create array to hold coordinates
 
-# Link the double nodes together
-node4.next = node5
-node5.next = node6
-node6.prev = node5
-node5.prev = node4
+for y in range(img.shape[0]): # Loop through the imgae rows
+    for x in range(img.shape[1]): # Loop through the images collums
+        if img[x,y] == 0: # Chech if the pixels is black
+            data.append((y,-x)) # Save coordinate to dataset
 
-# Treversing the double nodes, first forward and the then backwards
-node4.traverse()
-node6.backward()
+plt.scatter(*np.array(data).T)
+plt.show()
 
-print('-----------------------------------------------------------')
-
-# Link both types of nodes together
-node1.next = node2
-node2.next = node3
-node3.next = node4
-node4.next = node5
-node5.next = node6
-
-# Link the double nodes together backwards
-node4.prev = node3
-node5.prev = node4
-node6.prev = node5
-
-# Traversing all the nodes forwards and backwards
-node1.traverse()
-node6.backward()
+# cv2.imshow('image',img) # Show images
+# cv2.waitKey(0) # Wait for key press
+# cv2.destroyAllWindows() # Destroy windows
