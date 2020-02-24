@@ -2,28 +2,32 @@
 
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-import gng
+import random
 
 # Pre Images Processing
 
-img = cv2.imread('astro.png') # Load images
-img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # Convert to gray scale
-img = cv2.GaussianBlur(img,(5,5),cv2.BORDER_DEFAULT) # Blure images for less details
-ret, img = cv2.threshold(img,150,255,cv2.THRESH_BINARY) # Binarization threshold
+img = cv2.imread('roger.png') # Load images
+img_g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # Convert to gray scale
+img_g = cv2.GaussianBlur(img_g, (5,5), cv2.BORDER_DEFAULT) # Blure images for less details
+ret, img_g = cv2.threshold(img_g, 125, 255, cv2.THRESH_BINARY) # Binarization threshold
 
 # Creating dataset
 
-data = [] # create array to hold coordinates
+data = [] # Array for holding our pixel coords
 
-for y in range(img.shape[0]): # Loop through the imgae rows
-    for x in range(img.shape[1]): # Loop through the images collums
-        if img[x,y] == 0: # Chech if the pixels is black
-            data.append((y,-x)) # Save coordinate to dataset
+for cols in range(img_g.shape[0]): 
+    for rows in range(img_g.shape[1]):
+        if img_g.item(cols, rows) == 0:
+            data.append((cols, rows))
 
-plt.scatter(*np.array(data).T)
-plt.show()
+for i in range(100):
+    index = random.randint(0, len(data))
+    img_g[data[index]] = 127
+    cv2.imshow('image',img_g) # Show binary images
+    cv2.waitKey(100) # Wait for key press
+    img_g[data[index]] == 0
 
-# cv2.imshow('image',img) # Show images
+# cv2.imshow('image0',img) # Show original images
+# cv2.imshow('image',img_g) # Show binary images
 # cv2.waitKey(0) # Wait for key press
 # cv2.destroyAllWindows() # Destroy windows
